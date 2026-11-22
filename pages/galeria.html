@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <!-- Animált menü -->
+    <!-- Animált navigációs menü -->
     <nav class="navbar navbar-expand-lg navbar-dark custom-nav sticky-top">
         <div class="container">
             <a class="navbar-brand brand-anim" href="../index.html">COFFEE HOUSE</a>
@@ -18,83 +18,84 @@
             <div class="collapse navbar-collapse" id="foMenu">
                 <div class="navbar-nav ms-auto">
                     <a class="nav-link" href="../index.html">Főoldal</a>
-                    <a class="nav-link" href="kinalat.html">Kávék & Sütemények</a>
-                    <a class="nav-link" href="itallap.html">Itallap</a>
+                    <a class="nav-link" href="kinalat.html">Kínálat</a>
+                    <a class="nav-link" href="etlap.html">Étlap</a>
                     <a class="nav-link active" href="galeria.html">Galéria</a>
                     <a class="nav-link" href="foglalas.html">Asztalfoglalás</a>
+                    <a class="nav-link" href="velemeny.html">Vélemény</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <main class="container my-5">
-        <div class="p-4 bg-white rounded shadow-sm mb-4">
-            <h1>Galéria – Animált képek</h1>
-            <p>
-                Vidd az egeret a képek fölé a CSS nagyítási animációhoz, vagy kattints a gombra a jQuery
-                beúsztató animáció teszteléséhez!
+        <div class="p-4 bg-white rounded-4 shadow-sm mb-4">
+            <h1>Kávéházi Galéria</h1>
+            <p class="mb-3">
+                Az alábbi galéria a <code>img/kavehaz1.jpg</code> &ndash; <code>img/kavehaz6.jpg</code> fájlokat jeleníti meg.
+                A placeholder képeket később egyszerűen felülírhatod saját kávéházi fotókkal ugyanezeken a fájlneveken.
             </p>
-            <button id="btn-galeria-anim" class="btn egyedi-gomb btn-sm">Galéria újra-animálása (jQuery)</button>
+            <button id="btn-galeria-anim" class="btn egyedi-gomb btn-sm">Galéria animáció újrajátszása</button>
         </div>
 
         <div class="row g-4" id="galeria-racs">
             <div class="col-md-4 galeria-elem">
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm card-hover">
                     <div class="img-zoom-wrap rounded-top">
-                        <img src="../img/interior.svg" class="card-img-top animalt-kep" alt="Modern kávézó beltér">
+                        <img src="../img/kavehaz1.jpg" class="card-img-top animalt-kep" alt="Kávéház hangulat 1">
                     </div>
                     <div class="card-body">
-                        <p class="card-text mb-0">Modern, letisztult kávézótér (placeholder).</p>
+                        <p class="card-text mb-0">Kávéházi pillanat #1 (<code>kavehaz1.jpg</code>)</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 galeria-elem">
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm card-hover">
                     <div class="img-zoom-wrap rounded-top">
-                        <img src="../img/barista.svg" class="card-img-top animalt-kep" alt="Specialty barista">
+                        <img src="../img/kavehaz2.jpg" class="card-img-top animalt-kep" alt="Kávéház hangulat 2">
                     </div>
                     <div class="card-body">
-                        <p class="card-text mb-0">Friss kávékészítés a pultnál (placeholder).</p>
+                        <p class="card-text mb-0">Kávéházi pillanat #2 (<code>kavehaz2.jpg</code>)</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 galeria-elem">
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm card-hover">
                     <div class="img-zoom-wrap rounded-top">
-                        <img src="../img/espresso.svg" class="card-img-top animalt-kep" alt="Latte art">
+                        <img src="../img/kavehaz3.jpg" class="card-img-top animalt-kep" alt="Kávéház hangulat 3">
                     </div>
                     <div class="card-body">
-                        <p class="card-text mb-0">Espresso és krémes latte art (placeholder).</p>
+                        <p class="card-text mb-0">Kávéházi pillanat #3 (<code>kavehaz3.jpg</code>)</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 galeria-elem">
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm card-hover">
                     <div class="img-zoom-wrap rounded-top">
-                        <img src="../img/croissant.svg" class="card-img-top animalt-kep" alt="Croissant">
+                        <img src="../img/kavehaz4.jpg" class="card-img-top animalt-kep" alt="Kávéház hangulat 4">
                     </div>
                     <div class="card-body">
-                        <p class="card-text mb-0">Reggeli friss péksütemények (placeholder).</p>
+                        <p class="card-text mb-0">Kávéházi pillanat #4 (<code>kavehaz4.jpg</code>)</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 galeria-elem">
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm card-hover">
                     <div class="img-zoom-wrap rounded-top">
-                        <img src="../img/coldbrew.svg" class="card-img-top animalt-kep" alt="Jeges kávék">
+                        <img src="../img/kavehaz5.jpg" class="card-img-top animalt-kep" alt="Kávéház hangulat 5">
                     </div>
                     <div class="card-body">
-                        <p class="card-text mb-0">Nyári cold brew és jeges különlegességek (placeholder).</p>
+                        <p class="card-text mb-0">Kávéházi pillanat #5 (<code>kavehaz5.jpg</code>)</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 galeria-elem">
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm card-hover">
                     <div class="img-zoom-wrap rounded-top">
-                        <img src="../img/torta.svg" class="card-img-top animalt-kep" alt="Kézműves torták">
+                        <img src="../img/kavehaz6.jpg" class="card-img-top animalt-kep" alt="Kávéház hangulat 6">
                     </div>
                     <div class="card-body">
-                        <p class="card-text mb-0">Kézműves tortaszeletek naponta (placeholder).</p>
+                        <p class="card-text mb-0">Kávéházi pillanat #6 (<code>kavehaz6.jpg</code>)</p>
                     </div>
                 </div>
             </div>

@@ -1,30 +1,54 @@
+/* =========================================================
+   Coffee House - Megújult Main CSS (v2)
+   ========================================================= */
+
+:root {
+    --roast-dark: #231510;
+    --roast-main: #3e2723;
+    --roast-mid: #6d4c41;
+    --caramel: #c89f72;
+    --cream-bg: #f6f1eb;
+    --cream-soft: #fbf7f2;
+    --text-main: #2b1d18;
+}
+
 /* Háttérszín és alap tipográfia */
 body {
-    background-color: #f5f0eb;
-    color: #2c1e1a;
-    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    background-color: var(--cream-bg);
+    color: var(--text-main);
+    font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    color: var(--roast-dark);
+    font-weight: 700;
 }
 
 /* Animált menü kialakítása */
 .custom-nav {
-    background-color: #3e2723;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(90deg, var(--roast-dark) 0%, var(--roast-main) 100%);
+    box-shadow: 0 4px 16px rgba(35, 21, 16, 0.22);
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 }
 
 .brand-anim {
-    letter-spacing: 1.5px;
-    font-weight: 700;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: #fff8f0 !important;
     transition: transform 0.25s ease, color 0.25s ease;
 }
 .brand-anim:hover {
     transform: scale(1.05);
-    color: #ffcc80 !important;
+    color: var(--caramel) !important;
 }
 
 .custom-nav .nav-link {
     position: relative;
-    color: #efebe9;
-    margin-left: 8px;
+    color: #f3e9df;
+    margin-left: 10px;
+    font-weight: 500;
     transition: color 0.25s ease, transform 0.25s ease;
 }
 
@@ -35,13 +59,13 @@ body {
     bottom: 2px;
     width: 0;
     height: 2px;
-    background-color: #ffcc80;
+    background-color: var(--caramel);
     transition: width 0.3s ease;
 }
 
 .custom-nav .nav-link:hover,
 .custom-nav .nav-link.active {
-    color: #ffcc80;
+    color: var(--caramel) !important;
     transform: translateY(-2px);
 }
 
@@ -50,18 +74,81 @@ body {
     width: 100%;
 }
 
-/* Azonosító (ID) alapú formázás */
+/* Azonosító (ID) alapú formázások */
 #hero-box {
-    border-top: 5px solid #4e342e;
+    border-top: 6px solid var(--roast-main);
 }
 
-/* Osztály alapú formázás */
-.kiemelt-span {
-    background-color: #ffe0b2;
-    color: #3e2723;
-    padding: 2px 7px;
-    border-radius: 4px;
+#napi-ajanlat-doboz {
+    background: linear-gradient(135deg, var(--roast-dark) 0%, var(--roast-mid) 100%);
+    color: #ffffff;
+    border-left: 6px solid var(--caramel);
+}
+#napi-ajanlat-doboz h2 {
+    color: #ffffff;
+}
+
+#qr-kupon-doboz {
+    background-color: var(--cream-soft);
+    border: 2px dashed var(--caramel);
+}
+
+/* Osztály alapú formázások */
+.badge-roast {
+    background-color: var(--roast-main);
+    color: #fff8f0;
     font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+.kiemelt-span {
+    background-color: #f3dcc0;
+    color: var(--roast-dark);
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.text-roast {
+    color: var(--roast-mid);
+}
+
+.card-hover {
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(35, 21, 16, 0.12) !important;
+}
+
+/* Étlap kattintható termékkártyák */
+.etlap-kep-kartya {
+    cursor: pointer;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    border: 2px solid transparent !important;
+}
+.etlap-kep-kartya:hover {
+    transform: translateY(-6px);
+    border-color: var(--caramel) !important;
+    box-shadow: 0 14px 28px rgba(35, 21, 16, 0.15) !important;
+}
+
+.ar-badge {
+    display: inline-block;
+    background-color: var(--cream-bg);
+    color: var(--roast-main);
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--caramel);
+}
+
+.custom-modal-header {
+    background-color: var(--roast-dark);
+    color: #ffffff;
+}
+.custom-modal-header .modal-title {
+    color: #ffffff;
 }
 
 /* Animált képek */
@@ -71,72 +158,100 @@ body {
 
 .animalt-kep {
     width: 100%;
-    transition: transform 0.4s ease, filter 0.4s ease;
+    transition: transform 0.45s ease, filter 0.35s ease;
 }
 
 .img-zoom-wrap:hover .animalt-kep {
-    transform: scale(1.06);
-    filter: brightness(1.05);
+    transform: scale(1.07);
+    filter: brightness(1.04);
 }
 
 /* Linkek formázása */
 .egyedi-link {
-    color: #6d4c41;
+    color: var(--roast-mid);
     text-decoration: none;
     font-weight: 600;
-    border-bottom: 1px dashed #6d4c41;
-    transition: color 0.2s ease;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 .egyedi-link:hover {
-    color: #3e2723;
-    border-bottom-style: solid;
+    color: var(--roast-dark);
+    border-bottom-color: var(--caramel);
 }
 
 /* Táblázat formázása */
+.egyedi-tabla {
+    border-radius: 8px;
+    overflow: hidden;
+}
 .egyedi-tabla th {
-    background-color: #4e342e;
-    color: #ffffff;
+    background-color: var(--roast-dark);
+    color: #fff8f0;
+    font-weight: 600;
+    border: none;
 }
 .egyedi-tabla tbody tr {
     transition: background-color 0.2s ease;
 }
 .egyedi-tabla tbody tr:hover {
-    background-color: #efebe9;
+    background-color: #efe6dc;
 }
 
 /* Űrlap elemek és gombok formázása */
+.rating-box {
+    background-color: var(--cream-soft);
+    border: 1px solid #e6d8ca;
+}
+
 form input[type="text"],
 form textarea,
 form input[type="date"] {
-    border: 2px solid #d7ccc8;
+    border: 2px solid #d7c7b7;
+    border-radius: 8px;
 }
 form input[type="text"]:focus,
 form textarea:focus,
 form input[type="date"]:focus {
-    border-color: #6d4c41;
-    box-shadow: none;
+    border-color: var(--roast-mid);
+    box-shadow: 0 0 0 0.2rem rgba(200, 159, 114, 0.25);
 }
 
 .egyedi-gomb {
-    background-color: #4e342e;
+    background-color: var(--roast-main);
     color: #ffffff;
     border: none;
-    padding: 8px 20px;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-weight: 600;
     transition: background-color 0.25s ease, transform 0.2s ease;
 }
 .egyedi-gomb:hover {
-    background-color: #6d4c41;
+    background-color: var(--roast-mid);
     color: #ffffff;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+}
+
+.btn-outline-roast {
+    border: 2px solid var(--roast-main);
+    color: var(--roast-main);
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 7px 18px;
+    transition: all 0.25s ease;
+}
+.btn-outline-roast:hover {
+    background-color: var(--roast-main);
+    color: #ffffff;
 }
 
 /* Validációs hiba stílusok */
 .hibas-mezo {
     border: 2px solid #dc2626 !important;
-    background-color: #fef2f2;
+    background-color: #fef2f2 !important;
 }
 .hiba-uzenet {
     color: #dc2626;
     font-size: 0.875rem;
+    font-weight: 500;
     margin-top: 4px;
 }

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee House – Vélemény és Értékelés</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Animált navigációs menü -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand brand-anim" href="../index.html">COFFEE HOUSE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#foMenu" aria-controls="foMenu" aria-expanded="false" aria-label="Menü megnyitása">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="foMenu">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="../index.html">Főoldal</a>
+                    <a class="nav-link" href="kinalat.html">Kínálat</a>
+                    <a class="nav-link" href="etlap.html">Étlap</a>
+                    <a class="nav-link" href="galeria.html">Galéria</a>
+                    <a class="nav-link" href="foglalas.html">Asztalfoglalás</a>
+                    <a class="nav-link active" href="velemeny.html">Vélemény</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="p-4 p-md-5 bg-white rounded-4 shadow-sm">
+            <h1>Vélemény és Értékelés</h1>
+            <p>
+                Mondd el, hogyan érezted magad nálunk! Több szempont alapján is értékelheted a Coffee House-t.
+                A beküldött véleményed azonnal megjelenik az oldal alján.
+            </p>
+
+            <form id="velemeny-urlap" class="mt-4" novalidate>
+                <!-- Egysoros szövegmező -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="vel-nev" class="form-label">Neved / Beceneved:</label>
+                        <input type="text" id="vel-nev" class="form-control" placeholder="Pl. Szabó Márk">
+                        <div class="hiba-uzenet" id="hiba-vel-nev"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="vel-datum" class="form-label">Látogatás dátuma:</label>
+                        <input type="date" id="vel-datum" class="form-control">
+                        <div class="hiba-uzenet" id="hiba-vel-datum"></div>
+                    </div>
+                </div>
+
+                <!-- 1. Radio csoport: Kávé minősége -->
+                <div class="mb-3 p-3 rounded-3 rating-box" id="kave-ert-csoport">
+                    <label class="form-label fw-semibold d-block">1. Kávé és italok minősége:</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kaveErt" id="kave1" value="1">
+                        <label class="form-check-label" for="kave1">1 – Gyenge</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kaveErt" id="kave2" value="2">
+                        <label class="form-check-label" for="kave2">2 – Elmegy</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kaveErt" id="kave3" value="3">
+                        <label class="form-check-label" for="kave3">3 – Átlagos</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kaveErt" id="kave4" value="4">
+                        <label class="form-check-label" for="kave4">4 – Nagyon jó</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kaveErt" id="kave5" value="5">
+                        <label class="form-check-label" for="kave5">5 – Kiváló</label>
+                    </div>
+                    <div class="hiba-uzenet" id="hiba-kave-ert"></div>
+                </div>
+
+                <!-- 2. Radio csoport: Kiszolgálás -->
+                <div class="mb-3 p-3 rounded-3 rating-box" id="kiszolgalas-ert-csoport">
+                    <label class="form-label fw-semibold d-block">2. Kiszolgálás és baristák kedvessége:</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kiszolgalasErt" id="kisz1" value="1">
+                        <label class="form-check-label" for="kisz1">1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kiszolgalasErt" id="kisz2" value="2">
+                        <label class="form-check-label" for="kisz2">2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kiszolgalasErt" id="kisz3" value="3">
+                        <label class="form-check-label" for="kisz3">3</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kiszolgalasErt" id="kisz4" value="4">
+                        <label class="form-check-label" for="kisz4">4</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kiszolgalasErt" id="kisz5" value="5">
+                        <label class="form-check-label" for="kisz5">5</label>
+                    </div>
+                    <div class="hiba-uzenet" id="hiba-kiszolgalas-ert"></div>
+                </div>
+
+                <!-- 3. Radio csoport: Hangulat és tisztaság -->
+                <div class="mb-3 p-3 rounded-3 rating-box" id="hangulat-ert-csoport">
+                    <label class="form-label fw-semibold d-block">3. Kávézó hangulata és tisztasága:</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="hangulatErt" id="hang1" value="1">
+                        <label class="form-check-label" for="hang1">1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="hangulatErt" id="hang2" value="2">
+                        <label class="form-check-label" for="hang2">2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="hangulatErt" id="hang3" value="3">
+                        <label class="form-check-label" for="hang3">3</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="hangulatErt" id="hang4" value="4">
+                        <label class="form-check-label" for="hang4">4</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="hangulatErt" id="hang5" value="5">
+                        <label class="form-check-label" for="hang5">5</label>
+                    </div>
+                    <div class="hiba-uzenet" id="hiba-hangulat-ert"></div>
+                </div>
+
+                <!-- 4. Radio csoport: Ajánlanád-e másoknak? -->
+                <div class="mb-3 p-3 rounded-3 rating-box" id="ajanlas-csoport">
+                    <label class="form-label fw-semibold d-block">4. Ajánlanád a Coffee House-t ismerőseidnek?</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ajanlas" id="ajanl-igen" value="Igen, biztosan">
+                        <label class="form-check-label" for="ajanl-igen">Igen, biztosan</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ajanlas" id="ajanl-talan" value="Talán">
+                        <label class="form-check-label" for="ajanl-talan">Talán</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ajanlas" id="ajanl-nem" value="Nem">
+                        <label class="form-check-label" for="ajanl-nem">Nem</label>
+                    </div>
+                    <div class="hiba-uzenet" id="hiba-ajanlas"></div>
+                </div>
+
+                <!-- Többválasztós Checkbox opciók -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold d-block">Mi tetszett a legjobban? (Több opció is választható)</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="tetszett" id="tetsz-kave" value="Specialty kávék">
+                        <label class="form-check-label" for="tetsz-kave">Specialty kávék</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="tetszett" id="tetsz-suti" value="Friss sütemények">
+                        <label class="form-check-label" for="tetsz-suti">Friss sütemények</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="tetszett" id="tetsz-wifi" value="Gyors Wi-Fi / munkakörnyezet">
+                        <label class="form-check-label" for="tetsz-wifi">Gyors Wi-Fi / munkakörnyezet</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="tetszett" id="tetsz-zene" value="Háttérzene és dizájn">
+                        <label class="form-check-label" for="tetsz-zene">Háttérzene és dizájn</label>
+                    </div>
+                </div>
+
+                <!-- Többsoros szöveges vélemény -->
+                <div class="mb-3">
+                    <label for="vel-szoveg" class="form-label">Részletes vélemény:</label>
+                    <textarea id="vel-szoveg" rows="3" class="form-control" placeholder="Írd meg röviden a tapasztalataidat..."></textarea>
+                    <div class="hiba-uzenet" id="hiba-vel-szoveg"></div>
+                </div>
+
+                <!-- Gombok -->
+                <button type="submit" class="btn egyedi-gomb me-2">Vélemény beküldése</button>
+                <button type="reset" class="btn btn-secondary">Törlés</button>
+            </form>
+        </div>
+
+        <!-- Dinamikusan bővülő beküldött vélemények -->
+        <section class="mt-4">
+            <h2 class="h4 mb-3">Vendégeink eddigi véleményei</h2>
+            <div id="velemenyek-lista" class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 bg-white rounded-4 shadow-sm h-100">
+                        <div class="d-flex justify-content-between">
+                            <strong>Nagy Eszter</strong>
+                            <span class="badge badge-roast">Kávé: 5/5 &bull; Kiszolgálás: 5/5</span>
+                        </div>
+                        <p class="mt-2 mb-1 text-muted small">Ajánlás: Igen, biztosan &bull; Kedvenc: Specialty kávék, Friss sütemények</p>
+                        <p class="mb-0">Nagyon kellemes hely, a pisztáciás sajttorta és a flat white verhetetlen!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-4 text-muted">
+        <small>&copy; 2026 Coffee House &ndash; Webtechnológiák beadandó projekt.</small>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>
