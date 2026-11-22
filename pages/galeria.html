@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee House – Galéria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Animált menü -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand brand-anim" href="../index.html">COFFEE HOUSE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#foMenu" aria-controls="foMenu" aria-expanded="false" aria-label="Menü megnyitása">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="foMenu">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="../index.html">Főoldal</a>
+                    <a class="nav-link" href="kinalat.html">Kávék & Sütemények</a>
+                    <a class="nav-link" href="itallap.html">Itallap</a>
+                    <a class="nav-link active" href="galeria.html">Galéria</a>
+                    <a class="nav-link" href="foglalas.html">Asztalfoglalás</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="p-4 bg-white rounded shadow-sm mb-4">
+            <h1>Galéria – Animált képek</h1>
+            <p>
+                Vidd az egeret a képek fölé a CSS nagyítási animációhoz, vagy kattints a gombra a jQuery
+                beúsztató animáció teszteléséhez!
+            </p>
+            <button id="btn-galeria-anim" class="btn egyedi-gomb btn-sm">Galéria újra-animálása (jQuery)</button>
+        </div>
+
+        <div class="row g-4" id="galeria-racs">
+            <div class="col-md-4 galeria-elem">
+                <div class="card border-0 shadow-sm">
+                    <div class="img-zoom-wrap rounded-top">
+                        <img src="../img/interior.svg" class="card-img-top animalt-kep" alt="Modern kávézó beltér">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text mb-0">Modern, letisztult kávézótér (placeholder).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 galeria-elem">
+                <div class="card border-0 shadow-sm">
+                    <div class="img-zoom-wrap rounded-top">
+                        <img src="../img/barista.svg" class="card-img-top animalt-kep" alt="Specialty barista">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text mb-0">Friss kávékészítés a pultnál (placeholder).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 galeria-elem">
+                <div class="card border-0 shadow-sm">
+                    <div class="img-zoom-wrap rounded-top">
+                        <img src="../img/espresso.svg" class="card-img-top animalt-kep" alt="Latte art">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text mb-0">Espresso és krémes latte art (placeholder).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 galeria-elem">
+                <div class="card border-0 shadow-sm">
+                    <div class="img-zoom-wrap rounded-top">
+                        <img src="../img/croissant.svg" class="card-img-top animalt-kep" alt="Croissant">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text mb-0">Reggeli friss péksütemények (placeholder).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 galeria-elem">
+                <div class="card border-0 shadow-sm">
+                    <div class="img-zoom-wrap rounded-top">
+                        <img src="../img/coldbrew.svg" class="card-img-top animalt-kep" alt="Jeges kávék">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text mb-0">Nyári cold brew és jeges különlegességek (placeholder).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 galeria-elem">
+                <div class="card border-0 shadow-sm">
+                    <div class="img-zoom-wrap rounded-top">
+                        <img src="../img/torta.svg" class="card-img-top animalt-kep" alt="Kézműves torták">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text mb-0">Kézműves tortaszeletek naponta (placeholder).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-4 text-muted">
+        <small>&copy; 2026 Coffee House &ndash; Webtechnológiák beadandó projekt.</small>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee House – Kávék és Sütemények</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Animált menü -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand brand-anim" href="../index.html">COFFEE HOUSE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#foMenu" aria-controls="foMenu" aria-expanded="false" aria-label="Menü megnyitása">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="foMenu">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="../index.html">Főoldal</a>
+                    <a class="nav-link active" href="kinalat.html">Kávék & Sütemények</a>
+                    <a class="nav-link" href="itallap.html">Itallap</a>
+                    <a class="nav-link" href="galeria.html">Galéria</a>
+                    <a class="nav-link" href="foglalas.html">Asztalfoglalás</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="p-4 bg-white rounded shadow-sm mb-4">
+            <h1>Kávék és Sütemények</h1>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Minden italunkat frissen őrölt
+                <span class="kiemelt-span">100% Arabica</span> kávéból készítjük.
+            </p>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="img-zoom-wrap rounded-top">
+                        <img src="../img/espresso.svg" class="card-img-top animalt-kep" alt="Espresso">
+                    </div>
+                    <div class="card-body">
+                        <h2 class="h5">Espresso &amp; Cappuccino</h2>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="img-zoom-wrap rounded-top">
+                        <img src="../img/coldbrew.svg" class="card-img-top animalt-kep" alt="Cold Brew">
+                    </div>
+                    <div class="card-body">
+                        <h2 class="h5">Cold Brew &amp; Filter</h2>
+                        <p class="card-text">Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="img-zoom-wrap rounded-top">
+                        <img src="../img/torta.svg" class="card-img-top animalt-kep" alt="Kézműves torták">
+                    </div>
+                    <div class="card-body">
+                        <h2 class="h5">Kézműves Sütemények</h2>
+                        <p class="card-text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Számozott és pontozott lista követelmény -->
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="p-4 bg-white rounded shadow-sm h-100">
+                    <h2>A tökéletes kávé elkészítése (OL)</h2>
+                    <ol class="mt-3">
+                        <li>Friss, világos pörkölésű kávébab kimérése (18g)</li>
+                        <li>Egyenletes, finom szemcseméretű őrlés</li>
+                        <li>93 °C-os szűrt vízzel történő extrakció 25–30 másodpercig</li>
+                        <li>Selymes tejhab felgőzölése és tálalás</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-4 bg-white rounded shadow-sm h-100">
+                    <h2>Választható extrák és mentes opciók (UL)</h2>
+                    <ul class="mt-3">
+                        <li>Zabtej, mandulatej és laktózmentes tej</li>
+                        <li>Házi vanília-, karamell- és mogyorószirup</li>
+                        <li>Gluténmentes és vegán süteménykínálat</li>
+                        <li>Koffeinmentes (Decaf) őrlemény minden kávéhoz</li>
+                    </ul>
+                    <p class="mt-3 mb-0">
+                        Bővebben a kávéfajtákról:
+                        <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="egyedi-link">Specialty Kávé Útmutató (külső link)</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-4 text-muted">
+        <small>&copy; 2026 Coffee House &ndash; Webtechnológiák beadandó projekt.</small>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>
