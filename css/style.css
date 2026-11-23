@@ -1,18 +1,22 @@
 /* =========================================================
-   Coffee House - Megújult Main CSS (v2)
+   Coffee House – Fő stíluslap (css/style.css)
+   Tartalmazza: CSS változók, tag/ID/osztály szelektorok,
+   animált menü, egységes képvágás (object-fit), táblázat,
+   űrlap és validációs stílusok.
    ========================================================= */
 
+/* Globális színpaletta CSS változókban az egységes arculatért */
 :root {
-    --roast-dark: #231510;
-    --roast-main: #3e2723;
-    --roast-mid: #6d4c41;
-    --caramel: #c89f72;
-    --cream-bg: #f6f1eb;
-    --cream-soft: #fbf7f2;
-    --text-main: #2b1d18;
+    --roast-dark: #231510;   /* Sötét kávépörkölés (fejléc, címsorok) */
+    --roast-main: #3e2723;   /* Alap kávébarna (gombok, keretek) */
+    --roast-mid: #6d4c41;    /* Világosabb barna (hover, linkek) */
+    --caramel: #c89f72;      /* Karamell kiemelő szín */
+    --cream-bg: #f6f1eb;     /* Oldal háttérszíne */
+    --cream-soft: #fbf7f2;   /* Halvány kártya/doboz háttér */
+    --text-main: #2b1d18;    /* Alap szövegszín */
 }
 
-/* Háttérszín és alap tipográfia */
+/* --- Alap oldalbeállítások (HTML tag alapú formázás) --- */
 body {
     background-color: var(--cream-bg);
     color: var(--text-main);
@@ -25,7 +29,7 @@ h1, h2, h3 {
     font-weight: 700;
 }
 
-/* Animált menü kialakítása */
+/* --- Animált navigációs menü (osztály + pszeudo-elem) --- */
 .custom-nav {
     background: linear-gradient(90deg, var(--roast-dark) 0%, var(--roast-main) 100%);
     box-shadow: 0 4px 16px rgba(35, 21, 16, 0.22);
@@ -33,6 +37,7 @@ h1, h2, h3 {
     padding-bottom: 0.75rem;
 }
 
+/* Logó hover animációja */
 .brand-anim {
     letter-spacing: 2px;
     font-weight: 800;
@@ -44,6 +49,7 @@ h1, h2, h3 {
     color: var(--caramel) !important;
 }
 
+/* Menüpontok alap és lebegő (hover) animációja */
 .custom-nav .nav-link {
     position: relative;
     color: #f3e9df;
@@ -52,6 +58,7 @@ h1, h2, h3 {
     transition: color 0.25s ease, transform 0.25s ease;
 }
 
+/* Balról jobbra kifutó karamell aláhúzás a menüpontok alatt */
 .custom-nav .nav-link::after {
     content: "";
     position: absolute;
@@ -74,11 +81,12 @@ h1, h2, h3 {
     width: 100%;
 }
 
-/* Azonosító (ID) alapú formázások */
+/* --- Azonosító (ID) alapú formázások --- */
 #hero-box {
     border-top: 6px solid var(--roast-main);
 }
 
+/* Főoldali automatikus napi ajánlat doboz */
 #napi-ajanlat-doboz {
     background: linear-gradient(135deg, var(--roast-dark) 0%, var(--roast-mid) 100%);
     color: #ffffff;
@@ -88,12 +96,13 @@ h1, h2, h3 {
     color: #ffffff;
 }
 
+/* QR-kódos vendég kupon kerete */
 #qr-kupon-doboz {
     background-color: var(--cream-soft);
     border: 2px dashed var(--caramel);
 }
 
-/* Osztály alapú formázások */
+/* --- Osztály alapú formázások --- */
 .badge-roast {
     background-color: var(--roast-main);
     color: #fff8f0;
@@ -113,6 +122,7 @@ h1, h2, h3 {
     color: var(--roast-mid);
 }
 
+/* Kártyák finom emelkedése egér ráhúzáskor */
 .card-hover {
     transition: transform 0.28s ease, box-shadow 0.28s ease;
 }
@@ -121,11 +131,70 @@ h1, h2, h3 {
     box-shadow: 0 12px 24px rgba(35, 21, 16, 0.12) !important;
 }
 
-/* Étlap kattintható termékkártyák */
+/* --- Képek egységes méretezése és zoom animációja --- */
+/* Az overflow: hidden megakadályozza, hogy a nagyított kép kilógjon a keretből */
+.img-zoom-wrap {
+    overflow: hidden;
+    background-color: #e9dfd5;
+}
+
+/* Főoldali hero kép egységes aránya, hogy nagy felbontású fotónál se nyúljon szét */
+#hero-box .img-zoom-wrap {
+    max-height: 420px;
+}
+#hero-box .animalt-kep {
+    width: 100%;
+    height: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Kártyákban lévő képek (Galéria, Étlap, Kínálat, Főoldal):
+   Azonos 4:3 képarány + object-fit: cover -> álló és fekvő fotók is
+   torzítás nélkül, pontosan egyforma magasságban jelennek meg! */
+.card .img-zoom-wrap {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+}
+
+/* Galéria kártyák egységes elrendezése, hogy minden sor alja egy vonalban legyen */
+#galeria-racs .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 14px;
+}
+#galeria-racs .card-body {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.animalt-kep {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;        /* Kitölti a keretet torzítás nélkül */
+    object-position: center;  /* Középre igazítja a vágást */
+    display: block;
+    transition: transform 0.45s ease, filter 0.35s ease;
+}
+
+.img-zoom-wrap:hover .animalt-kep {
+    transform: scale(1.07);
+    filter: brightness(1.04);
+}
+
+/* --- Étlap kattintható termékkártyák és Modal fejléc --- */
 .etlap-kep-kartya {
     cursor: pointer;
     transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
     border: 2px solid transparent !important;
+    border-radius: 14px;
+    overflow: hidden;
 }
 .etlap-kep-kartya:hover {
     transform: translateY(-6px);
@@ -151,22 +220,7 @@ h1, h2, h3 {
     color: #ffffff;
 }
 
-/* Animált képek */
-.img-zoom-wrap {
-    overflow: hidden;
-}
-
-.animalt-kep {
-    width: 100%;
-    transition: transform 0.45s ease, filter 0.35s ease;
-}
-
-.img-zoom-wrap:hover .animalt-kep {
-    transform: scale(1.07);
-    filter: brightness(1.04);
-}
-
-/* Linkek formázása */
+/* --- Linkek formázása --- */
 .egyedi-link {
     color: var(--roast-mid);
     text-decoration: none;
@@ -179,7 +233,7 @@ h1, h2, h3 {
     border-bottom-color: var(--caramel);
 }
 
-/* Táblázat formázása */
+/* --- Táblázat formázása (Étlap oldal alján) --- */
 .egyedi-tabla {
     border-radius: 8px;
     overflow: hidden;
@@ -197,7 +251,7 @@ h1, h2, h3 {
     background-color: #efe6dc;
 }
 
-/* Űrlap elemek és gombok formázása */
+/* --- Űrlap elemek és gombok formázása --- */
 .rating-box {
     background-color: var(--cream-soft);
     border: 1px solid #e6d8ca;
@@ -205,13 +259,17 @@ h1, h2, h3 {
 
 form input[type="text"],
 form textarea,
-form input[type="date"] {
+form input[type="date"],
+form input[type="time"],
+form select {
     border: 2px solid #d7c7b7;
     border-radius: 8px;
 }
 form input[type="text"]:focus,
 form textarea:focus,
-form input[type="date"]:focus {
+form input[type="date"]:focus,
+form input[type="time"]:focus,
+form select:focus {
     border-color: var(--roast-mid);
     box-shadow: 0 0 0 0.2rem rgba(200, 159, 114, 0.25);
 }
@@ -244,7 +302,7 @@ form input[type="date"]:focus {
     color: #ffffff;
 }
 
-/* Validációs hiba stílusok */
+/* --- JavaScript/jQuery validációs hiba stílusok --- */
 .hibas-mezo {
     border: 2px solid #dc2626 !important;
     background-color: #fef2f2 !important;
@@ -254,4 +312,31 @@ form input[type="date"]:focus {
     font-size: 0.875rem;
     font-weight: 500;
     margin-top: 4px;
+}
+
+/* --- Dinamikus kóstoló jegyzet törlés (kicsi X) gomb --- */
+.jegyzet-torles-btn {
+    background: transparent;
+    border: none;
+    color: #6d4c41;
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 0 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+.jegyzet-torles-btn:hover {
+    color: #dc2626;
+    background-color: rgba(220, 38, 38, 0.1);
+}
+
+/* Nyitvatartás tájékoztató doboz az asztalfoglalás oldalon */
+.nyitvatartas-info {
+    background-color: var(--cream-soft);
+    border: 1px solid var(--caramel);
+    border-left: 5px solid var(--roast-main);
+    color: var(--text-main);
+    border-radius: 8px;
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coffee House – Étlap</title>
+    <!-- Bootstrap 5 keretrendszer és saját külső stíluslap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -23,6 +24,7 @@
                     <a class="nav-link" href="galeria.html">Galéria</a>
                     <a class="nav-link" href="foglalas.html">Asztalfoglalás</a>
                     <a class="nav-link" href="velemeny.html">Vélemény</a>
+                    <a class="nav-link" href="kapcsolat.html">Elérhetőségek</a>
                 </div>
             </div>
         </div>
@@ -37,7 +39,7 @@
             </p>
         </div>
 
-        <!-- 1. ELŐSZÖR A KÉPEK ANIMÁCIÓVAL (kattintásra nagyítás modalban) -->
+        <!-- 1. Kattintható termékképek: a data-* attribútumokból töltődik fel a nagyító Modal -->
         <section id="etlap-kepek-szekcio" class="mb-5">
             <div class="row g-4">
                 <div class="col-sm-6 col-lg-4 etlap-kartya-elem">
@@ -45,9 +47,9 @@
                          data-nev="Espresso"
                          data-ar="890 Ft"
                          data-leiras="30 ml – Intenzív, gazdag crema, 100% Arabica."
-                         data-img="../img/espresso.svg">
+                         data-img="../img/espresso.jpg">
                         <div class="img-zoom-wrap rounded-top">
-                            <img src="../img/espresso.svg" class="card-img-top animalt-kep" alt="Espresso">
+                            <img src="../img/espresso.jpg" class="card-img-top animalt-kep" alt="Espresso">
                         </div>
                         <div class="card-body text-center">
                             <h2 class="h5 mb-1">Espresso</h2>
@@ -61,9 +63,9 @@
                          data-nev="Cappuccino"
                          data-ar="1 190 Ft"
                          data-leiras="180 ml – Selymes tejhab és friss espresso harmóniája."
-                         data-img="../img/cappuccino.svg">
+                         data-img="../img/cappuccino.jpg">
                         <div class="img-zoom-wrap rounded-top">
-                            <img src="../img/cappuccino.svg" class="card-img-top animalt-kep" alt="Cappuccino">
+                            <img src="../img/cappuccino.jpg" class="card-img-top animalt-kep" alt="Cappuccino">
                         </div>
                         <div class="card-body text-center">
                             <h2 class="h5 mb-1">Cappuccino</h2>
@@ -77,9 +79,9 @@
                          data-nev="Flat White"
                          data-ar="1 290 Ft"
                          data-leiras="160 ml – Dupla ristretto finom mikrohabbal."
-                         data-img="../img/flatwhite.svg">
+                         data-img="../img/flatwhite.jpg">
                         <div class="img-zoom-wrap rounded-top">
-                            <img src="../img/flatwhite.svg" class="card-img-top animalt-kep" alt="Flat White">
+                            <img src="../img/flatwhite.jpg" class="card-img-top animalt-kep" alt="Flat White">
                         </div>
                         <div class="card-body text-center">
                             <h2 class="h5 mb-1">Flat White</h2>
@@ -93,9 +95,9 @@
                          data-nev="Cold Brew Tonic"
                          data-ar="1 450 Ft"
                          data-leiras="300 ml – 16 órán át áztatott hideg kávé prémium tonikkal."
-                         data-img="../img/coldbrew.svg">
+                         data-img="../img/coldbrew.jpg">
                         <div class="img-zoom-wrap rounded-top">
-                            <img src="../img/coldbrew.svg" class="card-img-top animalt-kep" alt="Cold Brew Tonic">
+                            <img src="../img/coldbrew.jpg" class="card-img-top animalt-kep" alt="Cold Brew Tonic">
                         </div>
                         <div class="card-body text-center">
                             <h2 class="h5 mb-1">Cold Brew Tonic</h2>
@@ -109,9 +111,9 @@
                          data-nev="Vajas Croissant"
                          data-ar="950 Ft"
                          data-leiras="1 db – Reggelente frissen sütött, ropogós francia croissant."
-                         data-img="../img/croissant.svg">
+                         data-img="../img/croissant.jpg">
                         <div class="img-zoom-wrap rounded-top">
-                            <img src="../img/croissant.svg" class="card-img-top animalt-kep" alt="Vajas Croissant">
+                            <img src="../img/croissant.jpg" class="card-img-top animalt-kep" alt="Vajas Croissant">
                         </div>
                         <div class="card-body text-center">
                             <h2 class="h5 mb-1">Vajas Croissant</h2>
@@ -125,9 +127,9 @@
                          data-nev="Pisztáciás Sajttorta"
                          data-ar="1 690 Ft"
                          data-leiras="1 szelet – Krémes sajttorta pörkölt pisztáciakrémmel."
-                         data-img="../img/sajttorta.svg">
+                         data-img="../img/sajttorta.jpg">
                         <div class="img-zoom-wrap rounded-top">
-                            <img src="../img/sajttorta.svg" class="card-img-top animalt-kep" alt="Pisztáciás Sajttorta">
+                            <img src="../img/sajttorta.jpg" class="card-img-top animalt-kep" alt="Pisztáciás Sajttorta">
                         </div>
                         <div class="card-body text-center">
                             <h2 class="h5 mb-1">Pisztáciás Sajttorta</h2>
@@ -141,9 +143,9 @@
                          data-nev="Vegán Csokoládés Brownie"
                          data-ar="1 390 Ft"
                          data-leiras="1 szelet – Étcsokoládés, növényi alapú sütemény."
-                         data-img="../img/brownie.svg">
+                         data-img="../img/brownie.jpg">
                         <div class="img-zoom-wrap rounded-top">
-                            <img src="../img/brownie.svg" class="card-img-top animalt-kep" alt="Vegán Brownie">
+                            <img src="../img/brownie.jpg" class="card-img-top animalt-kep" alt="Vegán Brownie">
                         </div>
                         <div class="card-body text-center">
                             <h2 class="h5 mb-1">Vegán Csokoládés Brownie</h2>
@@ -154,7 +156,7 @@
             </div>
         </section>
 
-        <!-- 2. OLDAL ALJÁN A TÁBLÁZAT (termék neve és ára + adatok) -->
+        <!-- 2. Reszponzív, egyedileg formázott ártáblázat az oldal alján -->
         <section class="p-4 bg-white rounded-4 shadow-sm">
             <h2 class="h3 mb-3">Teljes Árlista (Táblázat)</h2>
             <div class="table-responsive">
@@ -254,6 +256,7 @@
         <small>&copy; 2026 Coffee House &ndash; Webtechnológiák beadandó projekt.</small>
     </footer>
 
+    <!-- jQuery, Bootstrap JS és saját szkript betöltése -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
