@@ -1,6 +1,26 @@
-# Coffee House – Webtechnológiák 1 beadandó
+# Coffee House – Docker és AWS EC2 kiadás
 
 ## A projekt bemutatása
+
+A projekt Docker Compose-os telepítésre készült, például egy Ubuntu EC2 példányra. A konténer Node.js 22 alatt, nem root felhasználóval fut. Az SQLite adatbázis az EC2 gazdagép `DATA_DIR` könyvtárába kerül.
+
+### Gyors indítás fejlesztői gépen
+
+1. Másold le a `.env.example` fájlt `.env` néven.
+2. Állítsd be az `ADMIN_TOKEN` értékét legalább 32 karakteres véletlen titokra; SMTP-hez töltsd ki az SMTP-változókat.
+3. Indítsd el:
+
+   ```sh
+   docker compose up --build -d
+   ```
+
+4. Nyisd meg a `http://localhost:3000` vagy `http://localhost:3000/admin` címet.
+
+### AWS EC2
+
+Az EC2 telepítési útmutató, Nginx-konfiguráció, HTTPS és adatbázis-migrálás részletei alább, az [AWS EC2 telepítés](#aws-ec2-telepítés) fejezetben találhatók.
+
+---
 
 A projekt egy reszponzív, magyar nyelvű, hét HTML-oldalból álló Coffee House-kávézó weboldal. A látogatók megismerhetik a kávézó kínálatát, megtekinthetik az étlapot és a galériát, asztalt foglalhatnak, valamint véleményt küldhetnek be.
 
