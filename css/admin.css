@@ -1,0 +1,159 @@
+.admin-back-link {
+    color: #fff8f0;
+    text-decoration: none;
+}
+
+.admin-back-link:hover,
+.admin-back-link:focus {
+    color: var(--caramel);
+}
+
+.admin-heading,
+.admin-list-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-panel,
+.admin-stat {
+    background: #fff;
+    border: 1px solid rgba(62, 39, 35, 0.1);
+    border-radius: 1rem;
+    box-shadow: 0 0.35rem 1.2rem rgba(35, 21, 16, 0.06);
+}
+
+.admin-login-form {
+    max-width: 38rem;
+}
+
+.recipient-form,
+.recipient-targets {
+    max-width: 38rem;
+}
+
+.recipient-list {
+    display: grid;
+    gap: 0.65rem;
+    max-width: 48rem;
+}
+
+.recipient-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid rgba(62, 39, 35, 0.12);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+}
+
+.recipient-row .form-check {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.admin-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 1.15rem 1.35rem;
+}
+
+.admin-stat span {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.admin-stat strong {
+    color: var(--roast-main);
+    font-size: 1.75rem;
+}
+
+.admin-tabs .nav-link {
+    color: var(--roast-main);
+}
+
+.admin-tabs .nav-link.active {
+    color: var(--roast-dark);
+    font-weight: 700;
+}
+
+.admin-content {
+    border-top-left-radius: 0;
+    padding: 1.25rem;
+}
+
+.admin-list-heading {
+    margin-bottom: 1rem;
+}
+
+.admin-filter {
+    max-width: 20rem;
+}
+
+.admin-table {
+    min-width: 780px;
+    margin-bottom: 0;
+}
+
+.admin-table thead th {
+    color: #6c757d;
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-table td {
+    max-width: 18rem;
+}
+
+.admin-review-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: 1rem;
+}
+
+.admin-review-card {
+    min-width: 0;
+    border: 1px solid rgba(62, 39, 35, 0.12);
+    border-radius: 0.8rem;
+    padding: 1rem;
+}
+
+.admin-review-card p {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.admin-empty {
+    color: #6c757d;
+    margin: 1.5rem 0 0;
+    text-align: center;
+}
+
+@media (max-width: 575.98px) {
+    .admin-heading,
+    .admin-list-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    #admin-actions {
+        justify-content: flex-start;
+    }
+
+    .admin-filter {
+        max-width: none;
+        width: 100%;
+    }
+
+    .recipient-row {
+        align-items: flex-start;
+    }
+
+    .admin-content {
+        padding: 1rem 0.75rem;
+    }
+}

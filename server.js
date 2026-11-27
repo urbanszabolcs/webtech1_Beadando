@@ -5,6 +5,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const Database = require("better-sqlite3");
 const express = require("express");
+const nodemailer = require("nodemailer");
 
 const ROOT = __dirname;
 const TABLE_PREFERENCES = ["Ablak melletti", "Csendes sarok", "Terasz"];
@@ -129,6 +130,34 @@ function validateReview(body) {
   return errors;
 }
 
+function validEmailAddress(value) {
+  return typeof value === "string" &&
+    value.length <= 254 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function getSmtpSettings(env = process.env) {
+  const port = Number(env.SMTP_PORT || 587);
+  const configured = Boolean(
+    env.SMTP_HOST &&
+    env.SMTP_USER &&
+    env.SMTP_PASS &&
+    (env.SMTP_FROM || env.SMTP_USER) &&
+    Number.isInteger(port) &&
+    port > 0 &&
+    port <= 65535
+  );
+  return {
+    configured,
+    port,
+    secure: String(env.SMTP_SECURE || "").toLowerCase() === "true",
+    host: env.SMTP_HOST,
+    user: env.SMTP_USER,
+    pass: env.SMTP_PASS,
+    from: env.SMTP_FROM || env.SMTP_USER,
+  };
+}
+
 function createDatabase(databasePath) {
   fs.mkdirSync(path.dirname(databasePath), { recursive: true });
   const db = new Database(databasePath);
@@ -161,6 +190,13 @@ function createDatabase(databasePath) {
       text TEXT NOT NULL,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS notification_recipients (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT NOT NULL UNIQUE COLLATE NOCASE,
+      enabled INTEGER NOT NULL DEFAULT 1 CHECK (enabled IN (0, 1)),
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
   return db;
 }
@@ -168,6 +204,8 @@ function createDatabase(databasePath) {
 function createApplication({
   databasePath = process.env.DATABASE_PATH || path.join(ROOT, ".data", "coffee-house.sqlite"),
   adminToken = process.env.ADMIN_TOKEN,
+  sendEmail,
+  smtpConfigured: smtpConfiguredOverride,
 } = {}) {
   if (typeof adminToken !== "string" || adminToken.length < 32) {
     throw new Error("ADMIN_TOKEN must be configured and contain at least 32 characters.");
@@ -177,6 +215,21 @@ function createApplication({
     ? databasePath
     : path.resolve(ROOT, databasePath);
   const db = createDatabase(resolvedDatabasePath);
+  const smtp = getSmtpSettings();
+  const smtpConfigured = smtpConfiguredOverride ?? smtp.configured;
+  const transporter = sendEmail
+    ? null
+    : smtpConfigured
+      ? nodemailer.createTransport({
+        host: smtp.host,
+        port: smtp.port,
+        secure: smtp.secure,
+        auth: { user: smtp.user, pass: smtp.pass },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 20000,
+      })
+      : null;
   const app = express();
   app.disable("x-powered-by");
   app.use((req, res, next) => {
@@ -186,7 +239,38 @@ function createApplication({
   });
   app.use(express.json({ limit: "16kb", strict: true }));
 
-  app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
+  app.get("/api/health", (_req, res) => {
+    db.prepare("SELECT 1").get();
+    return res.json({ status: "ok" });
+  });
+
+  async function sendAdminNotification(subject, text) {
+    if (!smtpConfigured) return { sent: false, reason: "smtp_not_configured" };
+
+    const recipients = db.prepare(
+      "SELECT email FROM notification_recipients WHERE enabled = 1 ORDER BY id"
+    ).all().map((row) => row.email);
+    if (recipients.length === 0) return { sent: false, reason: "no_recipients" };
+
+    try {
+      const message = {
+        from: smtp.from,
+        to: smtp.from,
+        bcc: recipients,
+        subject,
+        text,
+      };
+      if (sendEmail) {
+        await sendEmail(message);
+      } else {
+        await transporter.sendMail(message);
+      }
+      return { sent: true };
+    } catch (error) {
+      console.error("Email notification delivery failed:", error.message);
+      return { sent: false, reason: "delivery_failed" };
+    }
+  }
 
   app.get("/api/reviews", (_req, res) => {
     const reviews = db.prepare(`
@@ -202,7 +286,7 @@ function createApplication({
     res.json(reviews);
   });
 
-  app.post("/api/reservations", (req, res) => {
+  app.post("/api/reservations", async (req, res) => {
     const body = req.body;
     if (!body || typeof body !== "object" || Array.isArray(body)) {
       return res.status(400).json({ error: "A foglalás adatai hibásak." });
@@ -227,10 +311,21 @@ function createApplication({
       notes: (body.notes || "").trim(),
     });
 
-    return res.status(201).json({ id: Number(result.lastInsertRowid), status: "pending" });
+    const id = Number(result.lastInsertRowid);
+    const notification = await sendAdminNotification(
+      `Új asztalfoglalás #${id}`,
+      [
+        `Vendég: ${body.name.trim()}`,
+        `Dátum és idő: ${body.date} ${body.time}`,
+        `Létszám: ${body.partySize} fő`,
+        `Asztal: ${body.tablePreference}`,
+        `Megjegyzés: ${(body.notes || "").trim() || "nincs"}`,
+      ].join("\n")
+    );
+    return res.status(201).json({ id, status: "pending", notification });
   });
 
-  app.post("/api/reviews", (req, res) => {
+  app.post("/api/reviews", async (req, res) => {
     const body = req.body;
     if (!body || typeof body !== "object" || Array.isArray(body)) {
       return res.status(400).json({ error: "A vélemény adatai hibásak." });
@@ -258,7 +353,22 @@ function createApplication({
       text: body.text.trim(),
     });
 
-    return res.status(201).json({ id: Number(result.lastInsertRowid) });
+    const id = Number(result.lastInsertRowid);
+    const notification = await sendAdminNotification(
+      `Új vendégvélemény #${id}`,
+      [
+        `Vendég: ${(body.name || "").trim() || "Névtelen vendég"}`,
+        `Látogatás dátuma: ${body.visitDate}`,
+        `Kávé: ${body.coffeeRating}/5`,
+        `Kiszolgálás: ${body.serviceRating}/5`,
+        `Hangulat: ${body.atmosphereRating}/5`,
+        `Ajánlás: ${body.recommendation}`,
+        `Kedvencek: ${body.likedItems.length ? body.likedItems.join(", ") : "nincs megadva"}`,
+        "",
+        body.text.trim(),
+      ].join("\n")
+    );
+    return res.status(201).json({ id, notification });
   });
 
   function requireAdmin(req, res, next) {
@@ -271,6 +381,71 @@ function createApplication({
     }
     return next();
   }
+
+  app.get("/api/admin/notification-recipients", requireAdmin, (_req, res) => {
+    const recipients = db.prepare(`
+      SELECT id, email, enabled, created_at AS createdAt
+      FROM notification_recipients ORDER BY id
+    `).all().map((recipient) => ({
+      ...recipient,
+      enabled: Boolean(recipient.enabled),
+    }));
+    res.json({ smtpConfigured, recipients });
+  });
+
+  app.post("/api/admin/notification-recipients", requireAdmin, (req, res) => {
+    const email = typeof req.body?.email === "string" ? req.body.email.trim().toLowerCase() : "";
+    if (!validEmailAddress(email)) {
+      return res.status(400).json({ error: "Adj meg egy érvényes e-mail-címet." });
+    }
+    const count = db.prepare("SELECT COUNT(*) AS count FROM notification_recipients").get().count;
+    if (count >= 20) {
+      return res.status(400).json({ error: "Legfeljebb 20 értesítési cím adható meg." });
+    }
+
+    try {
+      const result = db.prepare(
+        "INSERT INTO notification_recipients (email) VALUES (?)"
+      ).run(email);
+      return res.status(201).json({
+        id: Number(result.lastInsertRowid),
+        email,
+        enabled: true,
+      });
+    } catch (error) {
+      if (error.code === "SQLITE_CONSTRAINT_UNIQUE") {
+        return res.status(409).json({ error: "Ez az e-mail-cím már szerepel a listában." });
+      }
+      throw error;
+    }
+  });
+
+  app.patch("/api/admin/notification-recipients/:id", requireAdmin, (req, res) => {
+    const id = Number(req.params.id);
+    const { enabled } = req.body || {};
+    if (!Number.isSafeInteger(id) || id < 1 || typeof enabled !== "boolean") {
+      return res.status(400).json({ error: "Adj meg érvényes azonosítót és aktív állapotot." });
+    }
+    const result = db.prepare(
+      "UPDATE notification_recipients SET enabled = ? WHERE id = ?"
+    ).run(enabled ? 1 : 0, id);
+    if (result.changes === 0) {
+      return res.status(404).json({ error: "Az e-mail-cím nem található." });
+    }
+    return res.json({ id, enabled });
+  });
+
+  app.delete("/api/admin/notification-recipients/:id", requireAdmin, (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id < 1) {
+      return res.status(400).json({ error: "Érvénytelen e-mail-cím azonosító." });
+    }
+    const result = db.prepare("DELETE FROM notification_recipients WHERE id = ?").run(id);
+    if (result.changes === 0) {
+      return res.status(404).json({ error: "Az e-mail-cím nem található." });
+    }
+    return res.status(204).end();
+  });
 
   app.get("/api/admin/reservations", requireAdmin, (_req, res) => {
     const reservations = db.prepare(`
@@ -335,6 +510,9 @@ function createApplication({
     return res.status(204).end();
   });
 
+  app.get("/admin", (_req, res) => res.sendFile(path.join(ROOT, "admin.html")));
+  app.get("/admin.html", (_req, res) => res.sendFile(path.join(ROOT, "admin.html")));
+  app.get("/index.html", (_req, res) => res.redirect(301, "/"));
   app.get("/", (_req, res) => res.sendFile(path.join(ROOT, "index.html")));
   for (const directory of ["css", "img", "js", "pages"]) {
     app.use(`/${directory}`, express.static(path.join(ROOT, directory), {
@@ -355,7 +533,13 @@ function createApplication({
     return res.status(500).json({ error: "Belső szerverhiba történt." });
   });
 
-  return { app, close: () => db.close() };
+  return {
+    app,
+    close: () => {
+      if (transporter) transporter.close();
+      db.close();
+    },
+  };
 }
 
 if (require.main === module) {
@@ -363,10 +547,25 @@ if (require.main === module) {
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
     throw new Error("PORT must be an integer between 1 and 65535.");
   }
-  const { app } = createApplication();
-  app.listen(port, () => {
+  const { app, close } = createApplication();
+  const server = app.listen(port, () => {
     console.log(`Coffee House test site listening at http://localhost:${port}`);
   });
+
+  let shuttingDown = false;
+  function shutdown(signal) {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.log(`${signal} received; shutting down.`);
+    server.close(() => {
+      close();
+      process.exit(0);
+    });
+    setTimeout(() => process.exit(1), 10000).unref();
+  }
+
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
+  process.on("SIGINT", () => shutdown("SIGINT"));
 }
 
 module.exports = { createApplication };
