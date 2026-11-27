@@ -13,17 +13,6 @@ $(document).ready(function () {
         });
     }
 
-    function notificationNotice(notification) {
-        if (notification && notification.sent) return " E-mail értesítés elküldve.";
-        if (!notification || notification.reason === "smtp_not_configured") {
-            return " Az adat mentésre került, de az e-mail értesítéshez nincs beállítva az SMTP.";
-        }
-        if (notification.reason === "no_recipients") {
-            return " Az adat mentésre került, de nincs aktív e-mail címzett beállítva az admin felületen.";
-        }
-        return " Az adat mentésre került, de az e-mail értesítés küldése nem sikerült.";
-    }
-
     // ---------------------------------------------------------
     // 1. ELEMEK KIVÁLASZTÁSA (tag név, osztály, azonosító alapján)
     // ---------------------------------------------------------
@@ -337,7 +326,7 @@ $(document).ready(function () {
                 }
 
                 const uzenet = $("<div class='alert alert-success'></div>")
-                    .text("Köszönjük, " + nev + "! Az asztalfoglalásodat (" + datumStr + " " + idopont + ", " + valasztottLetszam + " fő, " + asztal + ") sikeresen rögzítettük. Azonosító: " + result.id + "." + notificationNotice(result.notification));
+                    .text("Köszönjük, " + nev + "! Az asztalfoglalásodat (" + datumStr + " " + idopont + ", " + valasztottLetszam + " fő, " + asztal + ") sikeresen rögzítettük. Azonosító: " + result.id + ".");
                 $("#sikeres-foglalas").append(uzenet).hide().fadeIn(350);
             } catch (error) {
                 console.error("Foglalás beküldése sikertelen:", error);
@@ -502,13 +491,8 @@ $(document).ready(function () {
                 }
 
                 form.reset();
-                const notificationClass = result.notification && result.notification.sent
-                    ? "alert-success"
-                    : "alert-warning";
                 $("#sikeres-velemeny").empty().append(
-                    $("<div></div>")
-                        .addClass("alert " + notificationClass)
-                        .text("Köszönjük, a véleményedet elmentettük." + notificationNotice(result.notification))
+                    $("<div class='alert alert-success'></div>").text("Köszönjük, a véleményedet elmentettük.")
                 );
                 await loadReviews();
             } catch (error) {
