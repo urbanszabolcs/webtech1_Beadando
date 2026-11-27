@@ -4,6 +4,15 @@
    ========================================================= */
 
 $(document).ready(function () {
+    function showApiFieldErrors(fieldErrors, fields) {
+        Object.entries(fieldErrors || {}).forEach(function ([field, message]) {
+            const target = fields[field];
+            if (!target) return;
+            $(target.control).addClass("hibas-mezo");
+            $(target.error).text(message);
+        });
+    }
+
     // ---------------------------------------------------------
     // 1. ELEMEK KIVÁLASZTÁSA (tag név, osztály, azonosító alapján)
     // ---------------------------------------------------------
@@ -204,7 +213,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#foglalas-urlap").submit(function (e) {
+    $("#foglalas-urlap").submit(async function (e) {
         e.preventDefault();
         let ervenyes = true;
 
@@ -279,14 +288,57 @@ $(document).ready(function () {
             ervenyes = false;
         }
 
-        // Sikeres foglalás visszajelzés létrehozása
+        // A szerveroldali API tárolja és újraellenőrzi a foglalást
         if (ervenyes) {
             const nev = $("#nev").val().trim();
             const valasztottLetszam = $("#letszam").val();
             const asztal = $("input[name='asztalTipus']:checked").val();
-            const uzenet = $("<div class='alert alert-success'></div>")
-                .text("Köszönjük, " + nev + "! Az asztalfoglalásodat (" + datumStr + " " + idopont + ", " + valasztottLetszam + " fő, " + asztal + ") sikeresen rögzítettük.");
-            $("#sikeres-foglalas").append(uzenet).hide().fadeIn(350);
+            const submitButton = $(this).find("button[type='submit']");
+            submitButton.prop("disabled", true);
+            try {
+                const response = await fetch("/api/reservations", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: nev,
+                        date: datumStr,
+                        time: idopont,
+                        partySize: Number(valasztottLetszam),
+                        tablePreference: asztal,
+                        decorColor: $("#dekor-szin").val(),
+                        notes: $("#megjegyzes").val(),
+                        acceptedTerms: $("#elfogad").is(":checked")
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    showApiFieldErrors(result.fieldErrors, {
+                        name: { control: "#nev", error: "#hiba-nev" },
+                        date: { control: "#datum", error: "#hiba-datum" },
+                        time: { control: "#idopont", error: "#hiba-idopont" },
+                        partySize: { control: "#letszam", error: "#hiba-letszam" },
+                        tablePreference: { control: "#asztal-csoport", error: "#hiba-asztal" },
+                        decorColor: { control: "#dekor-szin", error: "#hiba-dekor-szin" },
+                        notes: { control: "#megjegyzes", error: "#hiba-megjegyzes" },
+                        acceptedTerms: { control: "#elfogad", error: "#hiba-elfogad" }
+                    });
+                    throw new Error(result.error || "A foglalást nem sikerült rögzíteni.");
+                }
+
+                const uzenet = $("<div class='alert alert-success'></div>")
+                    .text("Köszönjük, " + nev + "! Az asztalfoglalásodat (" + datumStr + " " + idopont + ", " + valasztottLetszam + " fő, " + asztal + ") sikeresen rögzítettük. Azonosító: " + result.id + ".");
+                $("#sikeres-foglalas").append(uzenet).hide().fadeIn(350);
+            } catch (error) {
+                console.error("Foglalás beküldése sikertelen:", error);
+                const message = error.message === "Failed to fetch"
+                    ? "A szerver nem érhető el. Indítsd el a weboldalt a backend szerverrel."
+                    : error.message;
+                $("#sikeres-foglalas").append(
+                    $("<div class='alert alert-danger'></div>").text(message)
+                );
+            } finally {
+                submitButton.prop("disabled", false);
+            }
         }
     });
 
@@ -302,12 +354,67 @@ $(document).ready(function () {
     // ---------------------------------------------------------
     // 7. VÉLEMÉNY ÉS ÉRTÉKELÉS VALIDÁCIÓ (pages/velemeny.html)
     // ---------------------------------------------------------
-    $("#velemeny-urlap").submit(function (e) {
+    function createReviewCard(review) {
+        const likedItems = review.likedItems.length > 0
+            ? review.likedItems.join(", ")
+            : "Nincs megadva";
+        const card = $(`
+            <div class="col-md-6">
+                <div class="p-3 bg-white rounded-4 shadow-sm h-100">
+                    <div class="d-flex justify-content-between flex-wrap gap-1">
+                        <strong></strong>
+                        <span class="badge badge-roast"></span>
+                    </div>
+                    <p class="mt-2 mb-1 text-muted small"></p>
+                    <p class="mb-0"></p>
+                </div>
+            </div>
+        `);
+        card.find("strong").text(review.name || "Névtelen vendég");
+        card.find(".badge").text(
+            "Kávé: " + review.coffeeRating + "/5 • Kiszolgálás: " +
+            review.serviceRating + "/5 • Hangulat: " + review.atmosphereRating + "/5"
+        );
+        card.find("p.small").text(
+            "Ajánlás: " + review.recommendation + " • Kedvenc: " + likedItems
+        );
+        card.find("p.mb-0").text(review.text);
+        return card;
+    }
+
+    async function loadReviews() {
+        try {
+            const response = await fetch("/api/reviews");
+            const reviews = await response.json();
+            if (!response.ok) throw new Error("A vélemények betöltése nem sikerült.");
+            $("#velemenyek-hiba").addClass("d-none").text("");
+            $("#velemenyek-lista").empty();
+            if (reviews.length === 0) {
+                $("#velemenyek-lista").append(
+                    $("<p class='text-muted'></p>").text("Még nem érkezett vélemény.")
+                );
+                return;
+            }
+            reviews.forEach(function (review) {
+                $("#velemenyek-lista").append(createReviewCard(review));
+            });
+        } catch (error) {
+            console.error("Vélemények betöltése sikertelen:", error);
+            $("#velemenyek-hiba")
+                .removeClass("d-none")
+                .text("A vélemények nem tölthetők be. Indítsd el a weboldalt a backend szerverrel.");
+        }
+    }
+
+    if ($("#velemenyek-lista").length) loadReviews();
+
+    $("#velemeny-urlap").submit(async function (e) {
         e.preventDefault();
         let ervenyes = true;
 
         $(".hibas-mezo").removeClass("hibas-mezo");
         $(".hiba-uzenet").text("");
+        $("#sikeres-velemeny").empty();
 
         // A név mező opcionális; a látogatás dátuma és az értékelések kötelezők
         if ($("#vel-datum").val() === "") {
@@ -346,47 +453,63 @@ $(document).ready(function () {
             ervenyes = false;
         }
 
-        // Sikeres beküldés: új véleménykártya dinamikus létrehozása és beszúrása
+        // A vélemény szerveroldali tárolása
         if (ervenyes) {
-            const nev = $("#vel-nev").val().trim() || "Névtelen vendég";
-            const kave = $("input[name='kaveErt']:checked").val();
-            const kisz = $("input[name='kiszolgalasErt']:checked").val();
-            const hang = $("input[name='hangulatErt']:checked").val();
-            const ajanlas = $("input[name='ajanlas']:checked").val();
-            const szoveg = $("#vel-szoveg").val().trim();
-
-            // Összes bejelölt checkbox értékének összegyűjtése
-            const tetszettLista = [];
+            const form = this;
+            const likedItems = [];
             $("input[name='tetszett']:checked").each(function () {
-                tetszettLista.push($(this).val());
+                likedItems.push($(this).val());
             });
-            const kedvencSzoveg = tetszettLista.length > 0 ? tetszettLista.join(", ") : "Nincs megadva";
+            const submitButton = $(form).find("button[type='submit']");
+            submitButton.prop("disabled", true);
+            try {
+                const response = await fetch("/api/reviews", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: $("#vel-nev").val().trim(),
+                        visitDate: $("#vel-datum").val(),
+                        coffeeRating: Number($("input[name='kaveErt']:checked").val()),
+                        serviceRating: Number($("input[name='kiszolgalasErt']:checked").val()),
+                        atmosphereRating: Number($("input[name='hangulatErt']:checked").val()),
+                        recommendation: $("input[name='ajanlas']:checked").val(),
+                        likedItems: likedItems,
+                        text: $("#vel-szoveg").val().trim()
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    showApiFieldErrors(result.fieldErrors, {
+                        visitDate: { control: "#vel-datum", error: "#hiba-vel-datum" },
+                        coffeeRating: { control: "#kave-ert-csoport", error: "#hiba-kave-ert" },
+                        serviceRating: { control: "#kiszolgalas-ert-csoport", error: "#hiba-kiszolgalas-ert" },
+                        atmosphereRating: { control: "#hangulat-ert-csoport", error: "#hiba-hangulat-ert" },
+                        recommendation: { control: "#ajanlas-csoport", error: "#hiba-ajanlas" },
+                        text: { control: "#vel-szoveg", error: "#hiba-vel-szoveg" }
+                    });
+                    throw new Error(result.error || "A véleményt nem sikerült rögzíteni.");
+                }
 
-            // Új Bootstrap kártya összeállítása biztonságos .text() beillesztéssel
-            const ujKartya = $(`
-                <div class="col-md-6">
-                    <div class="p-3 bg-white rounded-4 shadow-sm h-100 border border-warning">
-                        <div class="d-flex justify-content-between flex-wrap gap-1">
-                            <strong></strong>
-                            <span class="badge badge-roast"></span>
-                        </div>
-                        <p class="mt-2 mb-1 text-muted small"></p>
-                        <p class="mb-0"></p>
-                    </div>
-                </div>
-            `);
-            ujKartya.find("strong").text(nev);
-            ujKartya.find(".badge").text("Kávé: " + kave + "/5 • Kiszolgálás: " + kisz + "/5 • Hangulat: " + hang + "/5");
-            ujKartya.find("p.small").text("Ajánlás: " + ajanlas + " • Kedvenc: " + kedvencSzoveg);
-            ujKartya.find("p.mb-0").text(szoveg);
-
-            $("#velemenyek-lista").prepend(ujKartya.hide().fadeIn(400));
-            this.reset();
+                form.reset();
+                $("#sikeres-velemeny").empty().append(
+                    $("<div class='alert alert-success'></div>").text("Köszönjük, a véleményedet elmentettük.")
+                );
+                await loadReviews();
+            } catch (error) {
+                console.error("Vélemény beküldése sikertelen:", error);
+                const message = error.message === "Failed to fetch"
+                    ? "A szerver nem érhető el. Indítsd el a weboldalt a backend szerverrel."
+                    : error.message;
+                $("#velemenyek-hiba").removeClass("d-none").text(message);
+            } finally {
+                submitButton.prop("disabled", false);
+            }
         }
     });
 
     $("#velemeny-urlap").on("reset", function () {
         $(".hibas-mezo").removeClass("hibas-mezo");
         $(".hiba-uzenet").text("");
+        $("#sikeres-velemeny").empty();
     });
 });

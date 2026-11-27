@@ -368,30 +368,14 @@
           </button>
           <button type="reset" class="btn btn-secondary">Törlés</button>
         </form>
+        <div id="sikeres-velemeny" class="mt-3"></div>
       </div>
 
       <!-- Dinamikusan bővülő beküldött vélemények -->
       <section class="mt-4">
         <h2 class="h4 mb-3">Vendégeink eddigi véleményei</h2>
+        <div id="velemenyek-hiba" class="alert alert-danger d-none" role="alert"></div>
         <div id="velemenyek-lista" class="row g-3">
-          <div class="col-md-6">
-            <div class="p-3 bg-white rounded-4 shadow-sm h-100">
-              <div class="d-flex justify-content-between">
-                <strong>Nagy Eszter</strong>
-                <span class="badge badge-roast"
-                  >Kávé: 5/5 &bull; Kiszolgálás: 5/5</span
-                >
-              </div>
-              <p class="mt-2 mb-1 text-muted small">
-                Ajánlás: Igen, biztosan &bull; Kedvenc: Specialty kávék, Friss
-                sütemények
-              </p>
-              <p class="mb-0">
-                Nagyon kellemes hely, a pisztáciás sajttorta és a flat white
-                verhetetlen!
-              </p>
-            </div>
-          </div>
         </div>
       </section>
     </main>

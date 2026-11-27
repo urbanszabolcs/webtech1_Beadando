@@ -61,17 +61,45 @@ A közös interaktív kód a [js/script.js](js/script.js) fájlban található.
 │   └── style.css
 ├── js/
 │   └── script.js
+├── test/
+│   └── server.test.js
+├── server.js
+├── package.json
 ├── img/
 │   └── képek és ikonok
 ├── dokumentacio.docx
 └── README.md
 ```
 
-## Futtatás
+## Backend és futtatás
 
-Nyisd meg az `index.html` fájlt egy modern böngészőben, majd használd a navigációs menüt az aloldalak megtekintéséhez. A Bootstrap és a jQuery CDN-ről töltődik be, ezért ezek használatához internetkapcsolat szükséges.
+A weboldal Node.js alapú Express API-t és SQLite adatbázist használ. A foglalások és a vélemények szerveroldali validálás után, a `.data/coffee-house.sqlite` fájlban tárolódnak. A Coffee House kitalált hely; a főoldal jelzi, hogy ez a weboldal tesztcélú, a beküldött adatok pedig csak bemutató adatok.
 
-Az űrlapok kliensoldali bemutatóként működnek: a foglalás sikerességét az oldal jelzi, a beküldött véleményt pedig az aktuális oldalon jeleníti meg. A projekt nem tartalmaz szerveroldali feldolgozást vagy tartós adattárolást.
+Szükséges: Node.js 20 vagy újabb és npm.
+
+1. Telepítsd a függőségeket: `npm install`.
+2. Másold le a környezeti változók mintáját: `Copy-Item .env.example .env`.
+3. A `.env` fájlban cseréld le az `ADMIN_TOKEN` értékét egy legalább 32 karakteres, véletlenszerű titokra.
+4. Indítsd el a szervert: `npm start`.
+5. Nyisd meg a `http://localhost:3000` címet. A HTML-fájl közvetlen megnyitása (`file://`) nem indítja el az API-t.
+
+Az API-végpontok:
+
+| Metódus | Útvonal | Hozzáférés | Leírás |
+|---|---|---|---|
+| `GET` | `/api/health` | Nyilvános | Szerver állapotának ellenőrzése |
+| `POST` | `/api/reservations` | Nyilvános | Foglalás létrehozása |
+| `GET` | `/api/reviews` | Nyilvános | Legutóbbi 100 vélemény lekérése |
+| `POST` | `/api/reviews` | Nyilvános | Vélemény létrehozása |
+| `GET` | `/api/admin/reservations` | Admin | Foglalások listázása (Bearer token) |
+| `PATCH` | `/api/admin/reservations/:id` | Admin | Foglalás státuszának módosítása |
+| `DELETE` | `/api/admin/reservations/:id` | Admin | Foglalás törlése |
+| `GET` | `/api/admin/reviews` | Admin | Vélemények listázása (Bearer token) |
+| `DELETE` | `/api/admin/reviews/:id` | Admin | Vélemény törlése |
+
+Az admin API-k a `.env` fájlban beállított titkot `Authorization: Bearer <ADMIN_TOKEN>` fejlécben várják. A titkot soha ne tedd a böngészőkódba vagy nyilvános forráskódba. A backend tesztjei az `npm test` paranccsal futtathatók.
+
+Bootstrap és jQuery továbbra is CDN-ről töltődik be, ezért ezekhez internetkapcsolat szükséges.
 
 ## Dokumentáció
 
